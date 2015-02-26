@@ -1,0 +1,110 @@
+% Bibliography for Concrete Structures, Chalmers University of Technology
+% Written by Filip Nilenius in October 2011
+
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage[swedish,english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{needspace}
+\usepackage{csquotes}
+\usepackage[
+    backend=biber,
+    bibencoding=utf8,
+    style=numeric,
+    hyperref=true,
+    sorting=ymdn,
+    defernumbers=true,
+]{biblatex}
+
+%% fonts
+%\usepackage[sc]{mathpazo}
+%\usepackage{libertine}
+%\usepackage{ebgaramond}
+%\usepackage{mathptmx}
+%stringtobereplacedbyfontsyntax
+
+
+\setlength{\paperwidth}{169mm}
+\setlength{\paperheight}{239mm}
+
+\usepackage[
+    top=0.1\paperheight,
+    bottom=0.1\paperheight,
+    left=0.1\paperwidth,
+    right=0.1\paperwidth,
+]{geometry}
+
+\hypersetup{
+    bookmarksopen=true,
+    bookmarksnumbered=false,
+    bookmarksopenlevel=2,
+    pdfstartview=FitH,
+    pdftitle={Bibliography - division of Concrete Structures, Chalmers University of Technology},
+    pdfauthor={Filip Nilenius},
+}
+
+\DeclareSortingScheme{ymdn}{
+  \sort{
+    \field{presort}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort{
+    \field{sortyear}
+    \field{year}
+  }
+  \sort{
+    \field[padside=left,padwidth=2,padchar=0]{month}
+    \literal{00}
+  }
+  \sort{
+    \field[padside=left,padwidth=2,padchar=0]{day}
+    \literal{00}
+  }
+  \sort{
+    \field{sorttitle}
+  }
+  \sort{
+    \field[padside=left,padwidth=4,padchar=0]{volume}
+    \literal{0000}
+  }
+  \sort{
+    \name{sortname}
+    \name{author}
+    \name{editor}
+    \name{translator}
+    \field{sorttitle}
+    \field{title}
+  }
+}
+\AtEveryBibitem{\clearfield{month}}
+
+
+\pagestyle{empty}
+\addbibresource[location=remote,label=doctoral]{https://raw.githubusercontent.com/FilipNilenius/Chalmers/bibliography/bibliography/doctoral.bib}
+\addbibresource[location=remote,label=licentiate]{https://raw.githubusercontent.com/FilipNilenius/Chalmers/bibliography/bibliography/licentiate.bib}
+
+\begin{document}
+\setlength\bibitemsep{8pt}
+\part*{Bibliography, Concrete Structures}
+Theses are given in order of time of publication. The numbers refer to the two series of dissertations at Chalmers University of Technology (the original, 1941-1975, and the new from 1971). The first PhD dissertation was arranged in 1948 although the first theses were published earlier. Theses until 1966 are in Civil Engineering, while theses from 1971 are in Concrete Structures.
+
+% doctoral theses
+\begin{refsection}[doctoral]
+\nocite{*}
+\printbibliography[resetnumbers=true,title={Doctoral Theses}]
+\end{refsection}
+\addcontentsline{toc}{subsection}{Doctoral Theses}
+
+
+% licentiate theses
+\needspace{10\baselineskip}
+\begin{refsection}[licentiate]
+\nocite{*}
+\printbibliography[resetnumbers=true,title={Licentiate Theses}]
+\end{refsection}
+\addcontentsline{toc}{subsection}{Licentiate Theses}
+\end{document}

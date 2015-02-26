@@ -1,0 +1,112 @@
+// c++ implementation of concrete structure's bibliography
+// written by Filip Nilenius, 2014-06-03
+
+#include <iostream>
+#include <cstdlib>
+#include <stdio.h>
+#include <fstream>
+#ifdef WINDOWS
+    #include <direct.h>
+    #define GetCurrentDir _getcwd
+#else
+    #include <unistd.h>
+    #include <mach-o/dyld.h>
+    #define GetCurrentDir getcwd
+#endif
+using namespace std;
+
+
+int main ()
+{
+    
+    
+    char path[1024];
+    uint32_t size = sizeof(path);
+    if (_NSGetExecutablePath(path, &size) == 0)
+        printf("executable path is %s\n", path);
+    else
+        printf("buffer too small; need size %u\n", size);
+    
+    string str(path);
+    int tre = str.length();
+    
+    cout << str.substr(0,tre-4) << endl;
+    
+    string cCurrentPath = str.substr(0,tre-4);
+    
+    
+    // setup strings
+    string delPDF = "rm ";
+    delPDF += cCurrentPath;
+    delPDF += "/*.pdf";
+    
+    string inTeX = cCurrentPath;
+    inTeX += "/biblio.tex";
+    
+    string outTeX = cCurrentPath;
+    outTeX += "/output.tex";
+    
+    string pdflatex = "/usr/texbin/pdflatex -output-directory=";
+    pdflatex += cCurrentPath;
+    pdflatex += " ";
+    pdflatex += cCurrentPath;
+    pdflatex += "/output";
+    
+    string biber = "/usr/texbin/biber --nolog --output_directory=";
+    biber += cCurrentPath;
+    biber += " output";
+
+    // delete old pdfs
+    system(delPDF.c_str());
+    
+    // setup different typefaces
+    string typeFaceName[] = {"computermodern","times","ebgaramond","palatino"};
+    string typeFaceSyntax[] = {" ","\\usepackage{mathptmx}","\\usepackage{ebgaramond}","\\usepackage[sc]{mathpazo}"};
+    
+    // for all typefaces
+    for(int n=0;n<4;++n){
+        std::ifstream ifs(inTeX.c_str());
+        std::string line;
+        std::ofstream out(outTeX.c_str());
+        while(std::getline(ifs, line))
+        {
+            if(line=="stringtoberemovedbypython"){
+                out << typeFaceSyntax[n] <<'\n';
+            }
+            else{
+                out << line <<'\n';
+            }
+        }
+        out.close();
+        
+        // system calls to compile pdfs
+        system(pdflatex.c_str());
+        if(n==0){ // only necessary first time
+            system(biber.c_str());
+            system(pdflatex.c_str());
+        }
+        system(pdflatex.c_str());
+        
+        // rename pdf according to its typeface name
+        string newName = cCurrentPath;
+        newName += "/biblio_";
+        newName.append(typeFaceName[n]);
+        newName.append(".pdf");
+        
+        string outName = cCurrentPath;
+        outName += "/output.pdf";
+        rename(outName.c_str(),newName.c_str());
+        
+        string delOut = "rm ";
+        delOut += cCurrentPath;
+        delOut += "/output.tex";
+        system(delOut.c_str());
+        
+    }
+    // clean up
+    string cleanUp = "rm ";
+    cleanUp += cCurrentPath;
+    cleanUp += "/output.*";
+    system(cleanUp.c_str());
+    return 0;
+}
