@@ -1,4 +1,4 @@
-Bibliography for  Concrete Structures.
-Written (2011) and maintained by Filip Nilenius.
+Bibliography for Concrete Structures, Chalmers University of Technology.
+Written by Filip Nilenius, 2011.
 
-Build  bibliography running 'buildbiblio.exe' (you will need to have a LaTeX distribution installed)
+Build bibliography by running 'buildbiblio.exe' (you will need to have a LaTeX distribution installed on your system).
